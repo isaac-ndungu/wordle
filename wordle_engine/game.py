@@ -1,5 +1,6 @@
 import random
 from .utils import get_word_list, give_feedback, check_guess, initialize_keyboard, update_keyboard, display_keyboard, show_welcome
+from .stats import update_stats, display_stats
 
 def choose_difficulty():
     print('\nChoose difficulty:')
@@ -17,25 +18,31 @@ def choose_difficulty():
 
 def run_game():
     show_welcome()
-    
     word_list = get_word_list()
-    secret_word = random.choice(word_list)
-    keyboard = initialize_keyboard()
 
     while True:
-        user_input = input('Get 6 chances to guess a word. Play? (y/n): ').strip().lower()
+        user_input = input('Play a game? (y/n): ').strip().lower()
 
         if user_input == 'n':
-            print('Bye')
+            display_stats()
+            print('Bye!')
             break
 
         elif user_input == 'y':
-            chances_allowed = choose_difficulty()
+            secret_word = random.choice(word_list)
+            print(secret_word)
+
+            keyboard = initialize_keyboard()
+            difficulty = choose_difficulty()
             chances = 1
-            while chances <= chances_allowed:
+
+            while chances <= difficulty:
                 player_input = input('Enter your Guess: ').strip().upper()
                 result = check_guess(player_input, secret_word, chances, word_list)
+
                 if result == 'win':
+                    update_stats(won=True, chances=chances, difficulty=difficulty)
+                    display_stats()
                     break
                 elif result == 'invalid':
                     continue
@@ -45,6 +52,8 @@ def run_game():
                 chances += 1
             else:
                 print(f'Oops! The word was {secret_word}')
+                update_stats(won=False, chances=chances, difficulty=difficulty)
+                display_stats()
         else:
             print('Invalid input')
             continue
