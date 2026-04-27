@@ -1,25 +1,41 @@
 import random
 from colorama import Fore, Back, Style
+from collections import Counter
+from pathlib import Path
 
 def get_word_list():
+    filepath = Path(__file__).parent / 'words.txt'
     word_list = []
-    with open('words.txt', 'r', encoding='utf-8') as file:
+    with open(filepath, 'r', encoding='utf-8') as file:
         words = [line.strip('\n') for line in file]
         for word in words: 
             word_list.append(word.upper())
     return word_list
 
 def give_feedback(player_input, secret_word):
-    output = ''
-    for index, letter in enumerate(player_input):
-        if letter not in secret_word:
-            output += Fore.WHITE + letter
-        elif letter == secret_word[index]:
-            output += Fore.GREEN + letter
-        else: 
-            output += Fore.YELLOW + letter
+    output = ['']*5
+    secret_count = {}
 
-    print(output + Style.RESET_ALL)
+    secret_count = Counter(secret_word)
+    
+    for index, letter in enumerate(player_input):
+        if letter == secret_word[index]:
+            output[index] = Fore.GREEN + letter
+            secret_count[letter] -= 1
+
+    for index, letter in enumerate(player_input):
+        # skip alredy marked letters
+        if output[index]:
+            continue
+        
+        if letter in secret_count and secret_count[letter] > 0:
+            output[index] = Fore.YELLOW + letter
+            secret_count[letter] -= 1
+        else:
+            output[index] = Fore.WHITE + letter
+        
+
+    print(''.join(output) + Style.RESET_ALL)
 
 def check_guess(player_input, secret_word, chances, word_list):
     if (len(player_input) != 5) or (player_input not in word_list):

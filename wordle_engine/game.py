@@ -4,6 +4,7 @@ from .utils import get_word_list, give_feedback, check_guess, initialize_keyboar
 def run_game():
     word_list = get_word_list()
     secret_word = random.choice(word_list)
+    print(secret_word)
     keyboard = initialize_keyboard()
 
     print('----- Wordle-----')
