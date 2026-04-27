@@ -77,3 +77,12 @@ def display_keyboard(keyboard):
     for letter, state in keyboard.items():
         print(color_map[state] + letter + Style.RESET_ALL, end=' ')
     print('\n')
+
+def show_welcome():
+    print(Fore.CYAN + '\n ---- Welcome to Wordle! --- \n' + Style.RESET_ALL)
+    print('Guess the 5-letter word in 6 tries!')
+    print(Fore.GREEN + 'GREEN' + Style.RESET_ALL + ' - Correct letter, correct position')
+    print(Fore.YELLOW + 'YELLOW' + Style.RESET_ALL + ' - Correct letter, wrong position')
+    print(Fore.WHITE + 'WHITE' + Style.RESET_ALL + ' - Letter not in word')
+    print('-' * 40)
+
