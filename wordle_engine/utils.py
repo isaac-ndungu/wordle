@@ -34,3 +34,30 @@ def check_guess(player_input, secret_word, chances, word_list):
     else:
         give_feedback(player_input, secret_word)
         return 'continue'
+
+def initialize_keyboard():
+    return {letter: 'unused' for letter in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'}
+
+def update_keyboard(keyboard, player_input, secret_word): 
+    for index, letter in enumerate(player_input):
+        if letter == secret_word[index]:
+            keyboard[letter] = 'correct'
+        elif letter in secret_word:
+            # only downgrade if not already green
+            if keyboard[letter] != 'correct':
+                keyboard[letter] = 'present'
+        else:
+            keyboard[letter] = 'absent'
+    return keyboard
+
+def display_keyboard(keyboard):
+    color_map = {
+        'unused': Fore.WHITE,
+        'correct': Fore.GREEN,
+        'present': Fore.YELLOW,
+        'absent': Fore.BLACK
+    }
+    print('\n')
+    for letter, state in keyboard.items():
+        print(color_map[state] + letter + Style.RESET_ALL, end=' ')
+    print('\n')
