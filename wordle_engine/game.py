@@ -17,6 +17,7 @@ def choose_difficulty():
         print('Invalid choice. Please enter 1, 2 or 3.')
 
 def run_game():
+    
     show_welcome()
     word_list = get_word_list()
 
@@ -42,6 +43,7 @@ def run_game():
             chances = 1
 
             while chances <= difficulty:
+                print(f'Guess {chances}/{difficulty}')
                 player_input = input('Enter your Guess: ').strip().upper()
                 result = check_guess(player_input, secret_word, chances, word_list)
 
