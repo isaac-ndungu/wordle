@@ -21,14 +21,19 @@ def run_game():
     word_list = get_word_list()
 
     while True:
-        user_input = input('Play a game? (y/n): ').strip().lower()
+        print('1. Play')
+        print('2. View Stats')
+        print('3. Quit')
+        user_input = input('Enter 1, 2 or 3: ').strip()
 
-        if user_input == 'n':
-            display_stats()
+        if user_input == '3':
             print('Bye!')
             break
 
-        elif user_input == 'y':
+        elif user_input == '2':
+            display_stats()
+
+        elif user_input == '1':
             secret_word = random.choice(word_list)
             print(secret_word)
 
